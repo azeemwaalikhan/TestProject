@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@model TwitterTestApp.Models.TwitterCollectionModel
+@{ var username = Model.UserName.ToLower();}
+
+<style>
+    .footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+        text-align: center;
+    }
+    .heading {
+        text-align: center;
+    }
+    .container {
+        margin-top: 20px;
+    }
+    .searchDiv {
+        width: 50%;
+        margin: 0 auto;
+        background-color: #E4E3E3;
+    }
+    .searchBox {
+        background-color: #F3F3F3;
+    }
+    .tweetBackground {
+        background-color: #F3F3F3;
+    }
+    .twwetDivMargin {
+        margin: 0 auto;
+    }
+    .tweet {
+        margin: 0 auto;
+        min-height: 100px;
+        height: 500px;
+        overflow-y: scroll;
+        overflow: auto;
+    }
+    .twwetPost {
+        font-weight: bold;
+    }
+    .twittStyle {
+        font-style: italic;
+    }
+    .norecord {
+        font-size: 20px;
+        color: #DC5170;
+        font-style: italic;
+        text-align: center;
+    }
+    .tableWidth {
+        width: 60%;
+    }
+    .textBoxWidth {
+        width: 50%;
+    }
+    .action {
+        width: 50%;
+    }
+    .submit {
+        width: 70px;
+        background-color: #4CAF50;
+    }
+     body {
+        background-color: #CACACA;
+    }
+     .textBox {
+         width: 300px;
+     }
+</style>
+
+<h1 class="heading">Sample application to get twitts by username</h1>
+<div class="container">
+    <fieldset class="searchDiv">
+
+        @{Html.BeginForm("Index", "User", FormMethod.Get);}
+        <fieldset class="searchBox">
+            <div>
+                <table class="tableWidth">
+                    <tr>
+                        <td colspan="2">
+                            @Html.LabelFor(m => m.UserName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="textBoxWidth">
+                            <div>
+                                @Html.TextBoxFor(m => m.UserName, new { placeholder = "Search by username", @class = "textBox" })
+                            </div>
+                        </td>
+                        <td class="action">
+                            <input type="submit" id="search" value="Go" class="submit" /> | @Html.ActionLink("Reset", "Index", "User")
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+        @{Html.EndForm();}
+
+        @if (Model.Twitts.Any())
+        {
+            <h2 class="heading">Twitts by <span class="twittStyle">@username</span></h2>
+            
+            <fieldset class="tweetBackground">
+                <div class="twwetDivMargin">
+                    <div class="tweet">
+                        @foreach (var item in Model.Twitts)
+                        {
+                            <span class="twwetPost">Created At: </span> @item.CreatedDate.ToString("F")<br /><br />
+                            <span class="twwetPost">Post: </span>
+                            <span class="twittStyle">@item.Twitt</span>
+                            <hr />
+                        }
+                    </div>
+                </div>
+            </fieldset>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Model.UserName))
+            {
+                <fieldset class="tweetBackground">
+                    <div class="twwetDivMargin">
+                        <p class="norecord">No Record Found</p>
+                    </div>
+                </fieldset>
+            }
+        }
+
+    </fieldset>
+</div>
+
+<div class="footer">
+    <h5>Sample Application &copy; Azeem Khan. All Rights Reserved - @DateTime.Today.Year</h5>
+</div>
